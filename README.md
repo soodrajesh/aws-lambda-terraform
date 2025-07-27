@@ -1,67 +1,249 @@
-# AWS Lambda Web App with Terraform
+# 🚀 AWS Lambda Web App with Terraform
 
-This project sets up a simple web application using AWS Lambda and API Gateway, all provisioned with Terraform.
+A modern, serverless web application deployed on AWS Lambda and API Gateway, fully managed with Terraform. This project demonstrates best practices for building and deploying serverless applications with infrastructure as code.
 
-## Prerequisites
+## ✨ Features
+
+- **Serverless Architecture**: Built on AWS Lambda and API Gateway
+- **Infrastructure as Code**: Managed with Terraform
+- **Modern Web Interface**: Responsive, mobile-friendly UI
+- **RESTful API**: Well-structured endpoints with proper HTTP methods
+- **CORS Support**: Pre-configured for web applications
+- **Environment-Aware**: Different configurations for development/production
+
+## 🏗️ Project Structure
+
+```
+.
+├── .gitignore          # Git ignore rules
+├── README.md           # This file
+├── index.js            # Lambda function source code
+├── main.tf             # Main Terraform configuration
+├── locals.tf           # Local variables and configurations
+└── package.json        # Node.js dependencies and scripts
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
 
 - [Terraform](https://www.terraform.io/downloads.html) (v1.0.0 or later)
 - [AWS CLI](https://aws.amazon.com/cli/) configured with appropriate credentials
-- [Node.js](https://nodejs.org/) (v14.x or later) - for packaging the Lambda function
+- [Node.js](https://nodejs.org/) (v18.x or later)
+- AWS Account with appropriate permissions
 
-## Project Structure
+### Installation
 
-- `main.tf` - Main Terraform configuration
-- `index.js` - Lambda function code
-- `package.json` - Node.js dependencies and scripts
-- `README.md` - This file
-
-## Deployment Instructions
-
-1. **Package the Lambda function**
+1. Clone the repository
    ```bash
-   npm install
-   npm run package
+   git clone <repository-url>
+   cd aws-lambda-terraform
    ```
 
-2. **Initialize Terraform**
+2. Initialize Terraform
    ```bash
    terraform init
    ```
 
-3. **Review the execution plan**
+### Deployment
+
+1. Package the Lambda function
+   ```bash
+   zip -r lambda.zip index.js
+   ```
+
+2. Review the execution plan
    ```bash
    terraform plan
    ```
 
-4. **Deploy the infrastructure**
+3. Deploy the infrastructure
    ```bash
    terraform apply
    ```
-   Type `yes` when prompted to confirm the deployment.
+   Confirm with `yes` when prompted.
 
-5. **Access your web app**
-   After deployment completes, Terraform will output the API Gateway endpoint URL. You can access your web app by opening this URL in a web browser.
+## 🌐 API Endpoints
 
-## Endpoints
+- `GET /` - Homepage with documentation
+- `GET /api/hello` - Simple greeting endpoint
+- `GET /api/health` - Health check endpoint
+- `GET /api/example/{id}` - Example endpoint with path parameters
 
-- `GET /` - Homepage with a welcome message
-- `GET /api/hello` - Sample API endpoint that returns a JSON response
+### Example Requests
 
-## Cleaning Up
+```bash
+# Get a greeting
+curl https://YOUR_API_GATEWAY_URL/api/hello
 
-To avoid incurring unnecessary charges, destroy the infrastructure when you're done:
+# Check API health
+curl https://YOUR_API_GATEWAY_URL/api/health
+
+# Example with path parameter
+curl https://YOUR_API_GATEWAY_URL/api/example/123
+```
+
+## 🛠️ Development
+
+### Local Development
+
+1. Install dependencies (if any)
+   ```bash
+   npm install
+   ```
+
+2. Make your changes to `index.js`
+
+3. Test changes locally using AWS SAM or AWS CLI
+
+### Updating the Lambda Function
+
+1. Make your code changes in `index.js`
+2. Create a new deployment package
+   ```bash
+   zip -r lambda.zip index.js
+   ```
+3. Update the Lambda function
+   ```bash
+   aws lambda update-function-code \
+     --function-name simple-web-app \
+     --zip-file fileb://lambda.zip \
+     --region eu-west-1 \
+     --profile raj-private
+   ```
+
+## 🧹 Cleanup
+
+To avoid unnecessary AWS charges, destroy all resources when done:
 
 ```bash
 terraform destroy
 ```
-Type `yes` when prompted to confirm the destruction.
 
-## Customization
+## 📝 License
 
-- Update the AWS region in `main.tf` if needed
-- Modify the Lambda function code in `index.js` to add more routes and functionality
-- Add environment variables in the `aws_lambda_function` resource in `main.tf`
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## License
+## 🤝 Contributing
 
-This project is open source and available under the [MIT License](LICENSE).
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 Documentation
+
+- [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [API Gateway Documentation](https://docs.aws.amazon.com/apigateway/)
+
+## 🔍 Troubleshooting
+
+- **Deployment Issues**: Check CloudWatch logs for the Lambda function
+- **API Gateway Errors**: Verify the integration with Lambda in the AWS Console
+- **CORS Problems**: Ensure the `Access-Control-Allow-Origin` header is properly set in responses
+
+## 📚 Command Reference
+
+### Terraform Commands
+
+```bash
+# Initialize Terraform in the project directory
+terraform init
+
+# Check the execution plan
+terraform plan
+
+# Apply changes to create/update infrastructure
+terraform apply
+
+# Destroy all resources
+terraform destroy
+
+# Format Terraform files
+terraform fmt
+
+# Validate Terraform configuration
+terraform validate
+
+# Show the current state
+terraform show
+```
+
+### AWS CLI Commands
+
+```bash
+# Update Lambda function code
+aws lambda update-function-code \
+  --function-name simple-web-app \
+  --zip-file fileb://lambda.zip \
+  --region eu-west-1 \
+  --profile raj-private
+
+# Invoke Lambda function directly
+aws lambda invoke \
+  --function-name simple-web-app \
+  --payload '{"key": "value"}' \
+  output.json \
+  --region eu-west-1 \
+  --profile raj-private
+
+# View Lambda function configuration
+aws lambda get-function-configuration \
+  --function-name simple-web-app \
+  --region eu-west-1 \
+  --profile raj-private
+
+# View Lambda function logs in CloudWatch
+aws logs filter-log-events \
+  --log-group-name /aws/lambda/simple-web-app \
+  --region eu-west-1 \
+  --profile raj-private
+
+# List API Gateway APIs
+aws apigatewayv2 get-apis \
+  --region eu-west-1 \
+  --profile raj-private
+
+# Get API Gateway details
+aws apigatewayv2 get-api \
+  --api-id YOUR_API_ID \
+  --region eu-west-1 \
+  --profile raj-private
+
+# Test API Gateway endpoint
+curl https://YOUR_API_GATEWAY_URL/api/hello
+```
+
+### Common Workflows
+
+#### Update and Deploy Lambda Function
+
+```bash
+# 1. Update your Lambda function code in index.js
+
+# 2. Create a new deployment package
+zip -r lambda.zip index.js
+
+# 3. Update the Lambda function
+aws lambda update-function-code \
+  --function-name simple-web-app \
+  --zip-file fileb://lambda.zip \
+  --region eu-west-1 \
+  --profile raj-private
+
+# 4. Test the updated function
+curl https://YOUR_API_GATEWAY_URL/api/hello
+```
+
+#### Update Infrastructure
+
+```bash
+# 1. Update your Terraform configuration files
+
+# 2. Review changes
+terraform plan
+
+# 3. Apply changes
+terraform apply
+
+# 4. Verify deployment
+curl https://YOUR_API_GATEWAY_URL/api/health
+```
