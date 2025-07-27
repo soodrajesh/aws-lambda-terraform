@@ -1,0 +1,11 @@
+{
+  "name": "aws-lambda-web-app",
+  "version": "1.0.0",
+  "description": "A simple web application running on AWS Lambda",
+  "main": "index.js",
+  "scripts": {
+    "package": "zip -r lambda.zip . -x '*.git*' -x '*.tf*' -x '*.md' -x '*.zip'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
